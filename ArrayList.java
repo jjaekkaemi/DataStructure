@@ -19,19 +19,18 @@ public class ArrayList {
 	public boolean addFirst(Object element) {
 		return add(0, element) ;
 	}
-	public boolean remove(int index) {
+	public void remove(int index) {
 		for(int i = index ; i<size-1 ; i++) {
 			elementData[i] = elementData[i+1] ;
 		}
 		size-- ;
 		elementData[size] = null ;
-		return true ;
 	}
-	public boolean removeFirst() {
-		return remove(0) ; 
+	public void removeFirst() {
+		remove(0) ; 
 	}
-	public boolean removeLast() {
-		return remove(size-1) ;
+	public void removeLast() {
+		remove(size-1) ;
 	}
 	public Object get(int index) {//arraylist를 활용하면 데이터를 빠르게 가져올 수 있다.
 		return elementData[index] ;
@@ -41,12 +40,14 @@ public class ArrayList {
 	}
 	public int indexOf(Object index) {
 		for(int i = 0 ; i<size ; i++) {
-			if(elementData[i]==index) {
-				break ;
+			if(index.equals(elementData[i])) {
+				return i ;
 			}
-			return i ;
 		}
-		return -1;
+		return -1; 
+	}
+	public ListIterator listIterator() {
+		return new ListIterator() ;
 	}
 	public String toString() {
 		String str = "[" ;
@@ -59,5 +60,35 @@ public class ArrayList {
 		}
 		
 		return str + "]" ;
+	}
+	public class ListIterator{
+		private int nextIndex = 0 ;
+		public Object next() {
+			return elementData[nextIndex++] ;
+			
+		}
+		public Object previous() {
+			return elementData[--nextIndex] ;
+		}
+		public boolean hasNext() {
+			/*if(elementData[nextIndex]==null) {
+				return false ;
+			}
+			else return true ; */
+			return size() > nextIndex  ;
+		}
+		public boolean hasPrevious() {
+			return nextIndex > 0 ;
+		}
+		public void add(Object element) {
+			ArrayList.this.add(nextIndex++, element) ;
+		}
+		public void remove(Object element) {
+			int i = ArrayList.this.indexOf(element) ;
+			if(i>-1) {
+				ArrayList.this.remove(i) ;
+			}
+		}
+		
 	}
 }
